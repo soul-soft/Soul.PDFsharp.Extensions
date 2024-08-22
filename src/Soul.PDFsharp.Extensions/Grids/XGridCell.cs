@@ -10,8 +10,6 @@ namespace Soul.PDFsharp.Extensions
         
         public bool AutoHeight { get; set; } = true;
 
-
-
         public double Margin
         {
             get
@@ -25,6 +23,8 @@ namespace Soul.PDFsharp.Extensions
                 _margin = value;
             }
         }
+
+        public double Padding { get; set; }
 
         public double MarginLeft { get; set; }
 

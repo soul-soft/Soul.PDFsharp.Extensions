@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 GlobalFontSettings.FontResolver = new WindowsFontResolver();
 GlobalFontSettings.DefaultFontEncoding = PdfFontEncoding.Unicode;
-var showBorder = false;
+var showBorder = true;
 var document = new PdfDocument();
 document.Info.Title = "工程造价咨询报告书";
 document.DrawPage((page, gfx) =>
@@ -40,7 +40,7 @@ document.DrawPage((page, gfx) =>
             row.DrawTextCell(cell =>
             {
                 cell.Text = "咨询项目全称: ";
-                cell.AutoHeight = false;
+                //cell.AutoHeight = false;
             });
             row.DrawTextCell(cell =>
             {
@@ -387,20 +387,20 @@ document.DrawPage((page, gfx) =>
 {
     var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);
     var titleFont = new XFont("STSONG.TTF", 24, XFontStyleEx.Bold);
-    //gfx.DrawGrid(50, titleFont, XBrushes.Black, grid =>
-    //{
-    //    grid.DrawRow(row =>
-    //    {
-    //        row.Height = 50;
-    //        row.Margin = 100;
-    //        row.Border.Visible = showBorder;
-    //        row.DrawTextCell(cell =>
-    //        {
-    //            cell.Text = "咨 询 报 告 书 目 录";
-    //            cell.Alignment = XGridAlignment.Center;
-    //        });
-    //    });
-    //});
+    gfx.DrawGrid(50, titleFont, XBrushes.Black, grid =>
+    {
+        grid.DrawRow(row =>
+        {
+            row.Height = 50;
+            row.Margin = 100;
+            row.Border.Visible = showBorder;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "咨 询 报 告 书 目 录";
+                cell.Alignment = XGridAlignment.Center;
+            });
+        });
+    });
     gfx.DrawGrid(120, bodyFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>
@@ -427,7 +427,6 @@ document.DrawPage((page, gfx) =>
                 cell.Text = "文件作者";
                 cell.Border.Visible = true;
                 cell.Width = 80;
-                cell.MarginRight = 10;
                 cell.Alignment = XGridAlignment.Center;
             });
             row.DrawTextCell(cell =>
@@ -477,7 +476,6 @@ document.DrawPage((page, gfx) =>
                     cell.Text = "xx";
                     cell.Border.Visible = true;
                     cell.Alignment = XGridAlignment.Center;
-                    cell.MarginRight = 10;
                     cell.Width = 80;
                 });
                 row.DrawTextCell(cell =>
