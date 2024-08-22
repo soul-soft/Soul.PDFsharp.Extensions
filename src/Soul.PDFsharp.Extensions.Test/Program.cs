@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 GlobalFontSettings.FontResolver = new WindowsFontResolver();
 GlobalFontSettings.DefaultFontEncoding = PdfFontEncoding.Unicode;
-var showBorder = true;
+var showBorder = false;
 var document = new PdfDocument();
 document.Info.Title = "工程造价咨询报告书";
 document.DrawPage((page, gfx) =>
@@ -96,296 +96,296 @@ document.DrawPage((page, gfx) =>
         });
     });
 });
-//document.DrawPage((page, gfx) =>
-//{
-//    var bodyFont = new XFont("STSONG.TTF", 12);
-//    gfx.DrawRectangle(new XPen(XColors.Black, 0.5), new XRect(50, 50, page.Width.Value - 100, page.Height.Value - 100));
-//    gfx.DrawGrid(100, bodyFont, XBrushes.Black, grid =>
-//    {
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 50;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.Border.Visible = showBorder;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "咨询报告书编号：万工咨结审H[2023]507号";
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 50;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.Border.Visible = showBorder;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "咨询项目委托方全称：杭州之江城市建设投资集团有限公司";
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 50;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.Border.Visible = showBorder;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "咨询企业法定住所： 宁波市海曙区布政巷16号19楼";
-//            });
-//        });
-//    });
-//    gfx.DrawGrid(250, bodyFont, XBrushes.Black, grid =>
-//    {
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 30;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "邮            编：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "315010";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "联系电话：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "0574-83890360";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 50;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "咨询作业期：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "2022年11月至2023年4月";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 80;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "法定代表人：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "邵铭法（盖章）";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "技术负责人：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "陈建华(盖章)";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 80;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "项目负责人：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "执(从)业资格(章)：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "从事专业：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 80;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "专业咨询人员：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "执(从)业资格(章)：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "从事专业：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 80;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "专业咨询人员：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "执(从)业资格(章)：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "从事专业：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 80;
-//            row.Margin.Left = 100;
-//            row.Margin.Right = 50;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "专业咨询人员：";
-//                cell.Width = 100;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "执(从)业资格(章)：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 60;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "从事专业：";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "";
-//                cell.Width = 50;
-//                cell.Border.Visible = showBorder;
-//            });
-//        });
-//    });
-//});
+document.DrawPage((page, gfx) =>
+{
+    var bodyFont = new XFont("STSONG.TTF", 12);
+    gfx.DrawRectangle(new XPen(XColors.Black, 0.5), new XRect(50, 50, page.Width.Value - 100, page.Height.Value - 100));
+    gfx.DrawGrid(100, bodyFont, XBrushes.Black, grid =>
+    {
+        grid.DrawRow(row =>
+        {
+            row.Height = 100;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.Border.Visible = showBorder;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "咨询报告书编号：万工咨结审H[2023]507号";
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 50;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.Border.Visible = showBorder;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "咨询项目委托方全称：杭州之江城市建设投资集团有限公司";
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 50;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.Border.Visible = showBorder;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "咨询企业法定住所： 宁波市海曙区布政巷16号19楼";
+            });
+        });
+    });
+    gfx.DrawGrid(250, bodyFont, XBrushes.Black, grid =>
+    {
+        grid.DrawRow(row =>
+        {
+            row.Height = 30;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "邮            编：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "315010";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "联系电话：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "0574-83890360";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 50;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "咨询作业期：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "2022年11月至2023年4月";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 80;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "法定代表人：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "邵铭法（盖章）";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "技术负责人：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "陈建华(盖章)";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 80;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "项目负责人：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "从事专业：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 80;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "专业咨询人员：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "从事专业：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 80;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "专业咨询人员：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "从事专业：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 80;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "专业咨询人员：";
+                cell.Width = 100;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 60;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "从事专业：";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 50;
+                cell.Border.Visible = showBorder;
+            });
+        });
+    });
+});
 //document.DrawPage((page, gfx) =>
 //{
 //    var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);

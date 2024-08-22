@@ -11,8 +11,8 @@ namespace Soul.PDFsharp.Extensions
         public static void DrawCoordinateSystem(this XGraphics graphics, XFont font, double size = 20)
         {
             // 获取页面的宽度和高度
-            double pageWidth = graphics.PdfPage.Width;
-            double pageHeight = graphics.PdfPage.Height;
+            double pageWidth = graphics.PageSize.Width;
+            double pageHeight = graphics.PageSize.Height;
 
             // 绘制 Y 轴
             graphics.DrawLine(XPens.Black, 0, 0, 0, pageHeight); // Y 轴
@@ -104,7 +104,10 @@ namespace Soul.PDFsharp.Extensions
             }
 
             // 计算行高
-            row.Height = CalculateRowHeight(graphics, row, font);
+            if (row.Height <= 0)
+            {
+                row.Height = CalculateRowHeight(graphics, row, font);
+            }
 
             // 设置行宽度
             row.Width = totalWidth;
