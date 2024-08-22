@@ -12,7 +12,13 @@ namespace Soul.PDFsharp.Extensions
     }
     public class XGrid
     {
+        private readonly bool _isDebug;
         private readonly List<XGridRow> _rows = new List<XGridRow>();
+
+        public XGrid(bool isDebug)
+        {
+            _isDebug = isDebug;
+        }
 
         public void DrawRow(Action<XGridRow> configure)
         {
@@ -20,14 +26,32 @@ namespace Soul.PDFsharp.Extensions
             configure(row);
             _rows.Add(row);
         }
+        
+        internal void DebugBorders()
+        {
+            if (!_isDebug)
+            {
+                return;
+            }
+            foreach (var row in _rows)
+            {
+                row.Border.Visible = true; // 设置行边框可见
+                foreach (var cell in row.Cells)
+                {
+                    cell.Border.Visible = true; // 设置单元格边框可见
+                }
+            }
+        }
 
-        internal IReadOnlyCollection<XGridRow> Rows => _rows;
+        internal List<XGridRow> Rows => _rows;
     }
     public enum XGridAlignment
     {
         Left,
         Right,
         Center,
+        Top,
+        Bottom,
     }
     public abstract class XGridCell
     {
@@ -37,11 +61,11 @@ namespace Soul.PDFsharp.Extensions
         /// <summary>
         /// 控制内边距
         /// </summary>
-        public MarginPaddingModel Margin { get; set; } = new MarginPaddingModel(0);
+        public XGridBox Margin { get; set; } = new XGridBox(0);
         /// <summary>
         /// 控制外边距
         /// </summary>
-        public MarginPaddingModel Padding { get; set; } = new MarginPaddingModel(0);
+        public XGridBox Padding { get; set; } = new XGridBox(0);
 
 
         internal XGridRow Row { get; }
@@ -51,19 +75,41 @@ namespace Soul.PDFsharp.Extensions
         public XBorder Border { get; } = new XBorder();
         internal double Height { get;  set; }
     }
-    public class MarginPaddingModel
+    public class XGridBox
     {
         public double Left { get; set; }
         public double Right { get; set; }
         public double Top { get; set; }
         public double Bottom { get; set; }
 
-        public MarginPaddingModel(double size)
+        public XGridBox(double size)
         {
             Left = size;
             Right = size;
             Top = size;
             Bottom = size;
+        }
+
+        public void SetHorizontal(double left)
+        {
+            Left = left;
+            Right = left;
+        }
+
+        public void SetVertical(double top)
+        {
+            Top = top;
+            Bottom = top;
+        }
+
+        public static implicit operator XGridBox(int size)
+        {
+            return new XGridBox(size);
+        }
+
+        public static implicit operator XGridBox(double size)
+        {
+            return new XGridBox(size);
         }
     }
     public class XGridRow
@@ -71,9 +117,10 @@ namespace Soul.PDFsharp.Extensions
 
         private readonly List<XGridCell> _cells = new List<XGridCell>();
 
-        public MarginPaddingModel Margin { get; set; } = new MarginPaddingModel(0);
+        public XGridBox Margin { get; set; } = new XGridBox(0);
 
         public double Height { get; set; }
+        public double Width { get; set; }
 
         public XBorder Border { get; } = new XBorder();
 
@@ -109,6 +156,6 @@ namespace Soul.PDFsharp.Extensions
         /// <summary>
         /// 垂直对齐方式
         /// </summary>
-        public XGridAlignment VerticalAlignment { get; set; } = XGridAlignment.Left;
+        public XGridAlignment VerticalAlignment { get; set; } = XGridAlignment.Center;
     }
 }
