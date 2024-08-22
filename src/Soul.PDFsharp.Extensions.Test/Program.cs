@@ -503,8 +503,7 @@ document.DrawPage((page, gfx) =>
     {
         grid.DrawRow(row => 
         {
-            row.Height = 100;
-            row.Margin = 100;
+            row.Margin = new MarginPaddingModel(100);
             //row.Border.Visible = true;
             row.DrawTextCell(cell => 
             {

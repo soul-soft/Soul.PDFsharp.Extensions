@@ -1,4 +1,5 @@
 ﻿using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,124 +13,121 @@ namespace Soul.PDFsharp.Extensions
         {
             var grid = new XGrid();
             configure(grid);
-            graphics.CalcGridElements(font, brush, grid);
-            var yOffset = y;
+
+            double pageWidth = graphics.PdfPage.Width; // 获取页面宽度
+            double currentY = y; // 当前y坐标
+
             foreach (var row in grid.Rows)
             {
-                var xOffset = row.MarginLeft;
+                double rowHeight = 0;
+                double totalWidth = 0;
+                double availableWidth = pageWidth - row.Margin.Left - row.Margin.Right; // 可用宽度
+
+                // 计算每个单元格的宽度和高度
                 foreach (var cell in row.Cells)
                 {
-                    xOffset += cell.MarginLeft;
-                    if (cell is XGridTextCell textCell)
-                    {
-                        var lines = new List<string>()
-                        {
-                            textCell.Text
-                        };
-                        if (textCell.Warp)
-                        {
-                            lines = graphics.GetLines(font, textCell.Text, cell.Width - 4);
-                        }
-                        var yLineOffset = 0d;
-                        foreach (var item in lines)
-                        {
-                            if (string.IsNullOrEmpty(item))
-                            {
-                                continue;
-                            }
-                            var textSize = graphics.MeasureString(textCell.Text, font);
-                            var cellHeight = cell.AutoHeight ? row.Height : textSize.Height;
-                            var centerOffset = (cellHeight - (textSize.Height * lines.Count + textCell.LineSpacing * lines.Count-1)) / 2;
-                            if (textCell.Alignment == XGridAlignment.Center)
-                            {
-                                graphics.DrawString(item, font, brush, new XRect(xOffset, yOffset + centerOffset + yLineOffset, cell.Width, 0), XStringFormats.TopCenter);
-                            }
-                            else if (textCell.Alignment == XGridAlignment.Left)
-                            {
-                                graphics.DrawString(item, font, brush, new XRect(xOffset, yOffset + centerOffset + yLineOffset, cell.Width, 0), XStringFormats.TopLeft);
-                            }
-                            else if (textCell.Alignment == XGridAlignment.Right)
-                            {
-                                graphics.DrawString(item, font, brush, new XRect(xOffset, yOffset + centerOffset + yLineOffset, cell.Width, 0), XStringFormats.TopRight);
-                            }
-                            yLineOffset += textSize.Height + textCell.LineSpacing;
-                        }
-                        if (cell.Border.Visible)
-                        {
-                            graphics.DrawRectangle(new XPen(row.Border.Color, row.Border.Size), new XRect(xOffset, yOffset, cell.Width, row.Height));
-                        }
-                    }
-                    xOffset += cell.Width + cell.MarginRight;
+                    // 计算单元格的宽度
+                    double cellWidth = cell.Width > 0 ? cell.Width : MeasureCellWidth(graphics, cell, font);
+                    totalWidth += cellWidth;
+
+                    // 计算单元格的高度
+                    double cellHeight = MeasureCellHeight(graphics, cell, font);
+                    rowHeight = Math.Max(rowHeight, cellHeight);
                 }
 
+                // 处理总宽度超出页面宽度的情况
+                if (totalWidth > availableWidth)
+                {
+                    double scale = availableWidth / totalWidth;
+                    foreach (var cell in row.Cells)
+                    {
+                        cell.Width *= scale; // 根据比例调整单元格宽度
+                    }
+                }
+
+                // 如果行高未指定，则使用行内单元格的最大高度
+                if (row.Height <= 0)
+                {
+                    row.Height = rowHeight;
+                }
+
+                // 统一设置所有单元格的高度为行高
+                foreach (var cell in row.Cells)
+                {
+                    cell.Height = row.Height; // 假设XGridCell有Height属性
+                }
+
+                // 绘制行边框
                 if (row.Border.Visible)
                 {
-                    graphics.DrawRectangle(new XPen(row.Border.Color, row.Border.Size), new XRect(row.MarginLeft, yOffset, graphics.PageSize.Width - (row.MarginLeft + row.MarginRight), row.Height));
+                    DrawBorder(graphics, row.Border, row.Margin.Left, currentY, totalWidth, row.Height);
                 }
 
-                yOffset += row.Height;
-            }
-        }
-
-        private static void CalcGridElements(this XGraphics graphics, XFont font, XBrush brush, XGrid grid)
-        {
-            foreach (var row in grid.Rows)
-            {
-                var xOffset = row.MarginLeft;
+                // 绘制单元格
+                double currentX = row.Margin.Left;
                 foreach (var cell in row.Cells)
                 {
-                    xOffset += cell.MarginLeft;
-                    if (cell is XGridTextCell textCell)
-                    {
-                        var textSize = graphics.MeasureString(textCell.Text, font);
-                        if (textSize.Width > cell.Width && cell.Width == 0)
-                        {
-                            cell.Width = textSize.Width;
-                        }
-                        //溢出检查
-                        if (cell.Width + xOffset > graphics.PageSize.Width)
-                        {
-                            cell.Width = graphics.PageSize.Width - xOffset - row.MarginRight;
-                        }
-                        var lines = new List<string>()
-                        {
-                            textCell.Text
-                        };
-                        if (textCell.Warp)
-                        {
-                            lines = graphics.GetLines(font, textCell.Text, cell.Width - 4);
-                        }
-                        //最后一列如果没有设置宽度，那么等于页面宽度，减掉当前偏移，减掉右边距
-                        if (cell == row.Cells.Last() && cell.Width == 0)
-                        {
-                            cell.Width = graphics.PageSize.Width - xOffset - row.MarginRight;
-                        }
-                        if (textSize.Height * lines.Count + textCell.LineSpacing * lines.Count - 1 > row.Height)
-                        {
-                            row.Height = textSize.Height * lines.Count + textCell.LineSpacing * lines.Count - 1;
-                        }
-                    }
-                    xOffset += cell.Width + cell.MarginRight;
+                    DrawCell(graphics, cell, font, brush, currentX, currentY, row.Height);
+                    currentX += cell.Width; // 移动到下一个单元格的X坐标
                 }
+
+                // 移动Y坐标到下一行的顶部
+                currentY += row.Height + row.Margin.Top + row.Margin.Bottom;
             }
         }
 
-        private static List<string> GetLines(this XGraphics graphics, XFont font, string text, double lineWidth)
+        private static double MeasureCellWidth(XGraphics graphics, XGridCell cell, XFont font)
         {
-            var lines = new List<string>();
-            var sb = new StringBuilder();
-            foreach (var item in text)
+            if (cell is XGridTextCell textCell)
             {
-                var size = graphics.MeasureString(sb.ToString(), font);
-                if ((int)size.Width >= (int)lineWidth)
-                {
-                    lines.Add(sb.ToString());
-                    sb.Clear();
-                }
-                sb.Append(item);
+                var size = graphics.MeasureString(textCell.Text, font);
+                return size.Width + cell.Padding.Left + cell.Padding.Right; // 添加内边距
             }
-            lines.Add(sb.ToString());
-            return lines;
+            return 0; // 其他类型的单元格
+        }
+
+        private static double MeasureCellHeight(XGraphics graphics, XGridCell cell, XFont font)
+        {
+            if (cell is XGridTextCell textCell)
+            {
+                var size = graphics.MeasureString(textCell.Text, font);
+                // 假设行间距为字体高度的一定倍数
+                double lineHeight = font.Height;
+                int lineCount = (int)Math.Ceiling(size.Height / lineHeight);
+                return lineCount * lineHeight + cell.Padding.Top + cell.Padding.Bottom; // 添加内边距
+            }
+            return 0; // 其他类型的单元格
+        }
+
+        private static void DrawCell(XGraphics graphics, XGridCell cell, XFont font, XBrush brush, double x, double y, double height)
+        {
+            if (cell is XGridTextCell textCell)
+            {
+                // 绘制文本
+                var layout = new XTextFormatter(graphics)
+                {
+                    Alignment = textCell.HorizontalAlignment == XGridAlignment.Center ? XParagraphAlignment.Center :
+                                textCell.HorizontalAlignment == XGridAlignment.Right ? XParagraphAlignment.Right :
+                                XParagraphAlignment.Left
+                };
+                var rect = new XRect(x + cell.Margin.Left, y + cell.Margin.Top, cell.Width - cell.Margin.Left - cell.Margin.Right, height - cell.Margin.Top - cell.Margin.Bottom);
+                layout.DrawString(textCell.Text, font, brush, rect, XStringFormats.TopLeft);
+            }
+
+            // 绘制单元格边框
+            if (cell.Border.Visible)
+            {
+                DrawBorder(graphics, cell.Border, x, y, cell.Width, height);
+            }
+        }
+
+        private static void DrawBorder(XGraphics graphics, XBorder border, double x, double y, double width, double height)
+        {
+            if (border.Visible)
+            {
+                XPen pen = new XPen(border.Color, border.Size);
+                graphics.DrawRectangle(pen, x, y, width, height);
+            }
         }
     }
 }
