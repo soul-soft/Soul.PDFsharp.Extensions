@@ -14,7 +14,10 @@ namespace Soul.PDFsharp.Extensions
     {
         private readonly bool _isDebug;
         private readonly List<XGridRow> _rows = new List<XGridRow>();
-
+        public XGrid()
+        {
+            _isDebug = true;
+        }
         public XGrid(bool isDebug)
         {
             _isDebug = isDebug;
@@ -67,6 +70,14 @@ namespace Soul.PDFsharp.Extensions
         /// </summary>
         public XGridBox Padding { get; set; } = new XGridBox(0);
 
+        /// <summary>
+        /// 水平对齐方式
+        /// </summary>
+        public XGridAlignment HorizontalAlignment { get; set; } = XGridAlignment.Left;
+        /// <summary>
+        /// 垂直对齐方式
+        /// </summary>
+        public XGridAlignment VerticalAlignment { get; set; } = XGridAlignment.Center;
 
         internal XGridRow Row { get; }
         /// <summary>
@@ -149,13 +160,6 @@ namespace Soul.PDFsharp.Extensions
         /// 多行文本的行间距
         /// </summary>
         public double LineSpacing { get; set; } = 0;
-        /// <summary>
-        /// 水平对齐方式
-        /// </summary>
-        public XGridAlignment HorizontalAlignment { get; set; } = XGridAlignment.Left;
-        /// <summary>
-        /// 垂直对齐方式
-        /// </summary>
-        public XGridAlignment VerticalAlignment { get; set; } = XGridAlignment.Center;
+     
     }
 }

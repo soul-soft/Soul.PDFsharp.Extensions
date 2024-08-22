@@ -41,6 +41,7 @@ document.DrawPage((page, gfx) =>
             {
                 cell.Text = "咨询项目全称: ";
                 cell.VerticalAlignment = XGridAlignment.Top;
+                cell.HorizontalAlignment = XGridAlignment.Left;
             });
             row.DrawTextCell(cell =>
             {
@@ -52,6 +53,7 @@ document.DrawPage((page, gfx) =>
         grid.DrawRow(row =>
         {
             row.Height = 40;
+            row.Margin.SetVertical(10);
             row.Margin.SetHorizontal(80);
             row.Border.Visible = showBorder;
             row.DrawTextCell(cell =>
@@ -82,7 +84,7 @@ document.DrawPage((page, gfx) =>
     {
         grid.DrawRow(row =>
         {
-            row.Margin.Left = 50;
+            row.Margin.SetHorizontal(50);
             row.Height = 50;
             row.Border.Visible = showBorder;
             row.DrawTextCell(cell =>
