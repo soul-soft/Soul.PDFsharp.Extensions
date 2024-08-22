@@ -17,6 +17,7 @@ document.DrawPage((page, gfx) =>
     var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);
     var titleFont = new XFont("STSONG.TTF", 30, XFontStyleEx.Bold);
     var footerFont = new XFont("STSONG.TTF", 18, XFontStyleEx.Bold);
+    gfx.DrawCoordinateSystem(new XFont("STSONG.TTF", 10));
     gfx.DrawGrid(100, titleFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>

@@ -8,6 +8,36 @@ namespace Soul.PDFsharp.Extensions
 {
     public static class XGridExtensions
     {
+        public static void DrawCoordinateSystem(this XGraphics graphics, XFont font, double size = 20)
+        {
+            // 获取页面的宽度和高度
+            double pageWidth = graphics.PdfPage.Width;
+            double pageHeight = graphics.PdfPage.Height;
+
+            // 绘制 Y 轴
+            graphics.DrawLine(XPens.Black, 0, 0, 0, pageHeight); // Y 轴
+            graphics.DrawString("Y", font, XBrushes.Black, 5, 5); // 在 Y 轴末尾标注 Y
+
+            // 绘制 X 轴
+            graphics.DrawLine(XPens.Black, 0, pageHeight, pageWidth, pageHeight); // X 轴
+            graphics.DrawString("X", font, XBrushes.Black, pageWidth - 20, pageHeight + 5); // 在 X 轴末尾标注 X
+
+            // 绘制 X 轴刻度
+            for (double i = 0; i <= pageWidth; i += size)
+            {
+                graphics.DrawLine(XPens.Black, i, pageHeight - 5, i, pageHeight + 5); // 刻度线
+                graphics.DrawString(i.ToString(), font, XBrushes.Black, i - (font.Size / 2), pageHeight + 10); // 刻度数字
+            }
+
+            // 绘制 Y 轴刻度
+            for (double i = 0; i <= pageHeight; i += size)
+            {
+                graphics.DrawLine(XPens.Black, -5, i, 5, i); // 刻度线
+                graphics.DrawString((pageHeight - i).ToString(), font, XBrushes.Black, 10, i - (font.Size / 2)); // 刻度数字
+            }
+        }
+
+
         /// <summary>
         /// 绘制网格，指定起始位置、字体、画刷和配置操作。
         /// </summary>
