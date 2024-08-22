@@ -100,7 +100,7 @@ namespace Soul.PDFsharp.Extensions
                             lines = graphics.GetLines(font, textCell.Text, cell.Width - 4);
                         }
                         //最后一列如果没有设置宽度，那么等于页面宽度，减掉当前偏移，减掉右边距
-                        if (cell == row.Cells.Last())
+                        if (cell == row.Cells.Last() && cell.Width == 0)
                         {
                             cell.Width = graphics.PageSize.Width - xOffset - row.MarginRight;
                         }
