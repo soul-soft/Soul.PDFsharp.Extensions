@@ -1,37 +1,36 @@
-﻿using Soul.PDFsharp.Extensions.Grids;
-
-namespace Soul.PDFsharp.Extensions
+﻿namespace Soul.PDFsharp.Extensions
 {
     public abstract class XGridCell
     {
-        private double _margin = 0;
-
+        /// <summary>
+        /// 高度
+        /// </summary>
+        public double Height { get; set; }
+        /// <summary>
+        /// 宽度
+        /// </summary>
         public double Width { get; set; }
-        
-        public bool AutoHeight { get; set; } = true;
-
-        public double Margin
-        {
-            get
-            {
-                return _margin;
-            }
-            set
-            {
-                MarginLeft = value;
-                MarginRight = value;
-                _margin = value;
-            }
-        }
-
-        public double Padding { get; set; }
-
-        public double MarginLeft { get; set; }
-
-        public double MarginRight { get; set; }
+        /// <summary>
+        /// 控制内边距
+        /// </summary>
+        public XGridBox Margin { get; set; } = new XGridBox(0);
+        /// <summary>
+        /// 控制外边距
+        /// </summary>
+        public XGridBox Padding { get; set; } = new XGridBox(0);
+        /// <summary>
+        /// 水平对齐方式
+        /// </summary>
+        public XGridAlignment HorizontalAlignment { get; set; } = XGridAlignment.Left;
+        /// <summary>
+        /// 垂直对齐方式
+        /// </summary>
+        public XGridAlignment VerticalAlignment { get; set; } = XGridAlignment.Center;
 
         internal XGridRow Row { get; }
-
-        public XBorder Border { get; } = new XBorder();
+        /// <summary>
+        /// 控制边框
+        /// </summary>
+        public XGridBorder Border { get; } = new XGridBorder();
     }
 }

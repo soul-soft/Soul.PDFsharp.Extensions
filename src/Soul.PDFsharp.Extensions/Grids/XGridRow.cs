@@ -1,40 +1,31 @@
-﻿using Soul.PDFsharp.Extensions.Grids;
-using System;
+﻿using PdfSharp.Drawing;
 using System.Collections.Generic;
+using System;
 
 namespace Soul.PDFsharp.Extensions
 {
     public class XGridRow
     {
-        private double _margin = 0;
 
         private readonly List<XGridCell> _cells = new List<XGridCell>();
 
-        public double Margin
-        {
-            get 
-            {
-                return _margin;
-            }
-            set
-            {
-                MarginLeft = value;
-                MarginRight = value;
-                _margin = value;
-            }
-        }
-
-        public double MarginLeft { get; set; }
-
-        public double MarginRight { get; set; }
+        public XGridBox Margin { get; set; } = new XGridBox(0);
 
         public double Height { get; set; }
+        public double Width { get; set; }
 
-        public XBorder Border { get; } = new XBorder();
+        public XGridBorder Border { get; } = new XGridBorder();
 
         public void DrawTextCell(Action<XGridTextCell> configure)
         {
             var cell = new XGridTextCell();
+            configure(cell);
+            _cells.Add(cell);
+        }
+
+        public void DrawImageCell(Action<XGridImageCell> configure)
+        {
+            var cell = new XGridImageCell();
             configure(cell);
             _cells.Add(cell);
         }

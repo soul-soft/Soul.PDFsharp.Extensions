@@ -5,5 +5,7 @@
         Left,
         Right,
         Center,
+        Top,
+        Bottom,
     }
 }
