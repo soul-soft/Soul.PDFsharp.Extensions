@@ -116,16 +116,31 @@ namespace Soul.PDFsharp.Extensions
         /// <summary>
         /// 计算行高，通过获取行内最高单元格的高度。
         /// </summary>
+        /// <summary>
+        /// 计算行高，通过获取行内最高单元格的高度，考虑用户指定的行高和单元格内边距。
+        /// </summary>
         private static double CalculateRowHeight(XGraphics graphics, XGridRow row, XFont font)
         {
-            double rowHeight = 0;
+            double maxCellHeight = 0;
+
             foreach (var cell in row.Cells)
             {
+                // 计算单元格的高度，考虑内边距
                 double cellHeight = MeasureCellHeight(graphics, cell, font, cell.Width);
-                rowHeight = Math.Max(rowHeight, cellHeight);
-                cell.Height = cellHeight;
+                cellHeight += cell.Padding.Top + cell.Padding.Bottom;
+
+                // 记录最大的单元格高度
+                maxCellHeight = Math.Max(maxCellHeight, cellHeight);
             }
-            return rowHeight;
+
+            // 如果用户指定了行高，行高取用户指定的行高和所有单元格高度最大值之间的较大值
+            if (row.Height > 0)
+            {
+                return Math.Max(row.Height, maxCellHeight);
+            }
+
+            // 如果用户未指定行高，行高取所有单元格高度中的最大值
+            return maxCellHeight;
         }
 
         /// <summary>
@@ -190,7 +205,11 @@ namespace Soul.PDFsharp.Extensions
                 double availableWidth = width - cell.Padding.Left - cell.Padding.Right;
                 int lineCount = GetLines(graphics, textCell, availableWidth, font).Count;
                 double lineHeight = graphics.MeasureString("A", font).Height;
+
+                // Calculate total text height, including line spacing and padding
                 double totalHeight = lineCount * lineHeight + (lineCount - 1) * textCell.LineSpacing + cell.Padding.Top + cell.Padding.Bottom;
+
+                // Return the total height including padding only once
                 return totalHeight;
             }
             return 0;
@@ -239,7 +258,7 @@ namespace Soul.PDFsharp.Extensions
         /// <summary>
         /// 绘制单元格内容和边框。
         /// </summary>
-        private static void DrawCell(XGraphics graphics, XGridCell cell, XFont font, XBrush brush, double x, double y, double height)
+        private static void DrawCell(XGraphics graphics, XGridCell cell, XFont font, XBrush brush, double x, double y, double rowHeight)
         {
             if (cell is XGridTextCell textCell)
             {
@@ -249,8 +268,8 @@ namespace Soul.PDFsharp.Extensions
                 // 计算文本总高度
                 double totalTextHeight = lines.Count * lineHeight + (lines.Count - 1) * textCell.LineSpacing;
 
-                // 根据垂直对齐方式调整起始Y坐标
-                double startY = CalculateTextStartY(y, height, cell, totalTextHeight);
+                // 根据垂直对齐方式调整起始Y坐标，考虑内边距
+                double startY = CalculateTextStartY(y, rowHeight, cell, totalTextHeight);
 
                 // 绘制每一行文本，考虑内边距和水平对齐方式
                 for (int i = 0; i < lines.Count; i++)
@@ -270,7 +289,7 @@ namespace Soul.PDFsharp.Extensions
             // 绘制单元格边框
             if (cell.Border.Visible)
             {
-                DrawBorder(graphics, cell.Border, x, y, cell.Width, height);
+                DrawBorder(graphics, cell.Border, x, y, cell.Width, rowHeight);
             }
         }
 
@@ -279,15 +298,16 @@ namespace Soul.PDFsharp.Extensions
         /// </summary>
         private static double CalculateTextStartY(double y, double height, XGridCell cell, double totalTextHeight)
         {
+            // Adjust Y coordinate based on vertical alignment without recalculating padding
             switch (cell.VerticalAlignment)
             {
                 case XGridAlignment.Top:
-                    return y + cell.Margin.Top + cell.Padding.Top;
+                    return y + cell.Margin.Top; // Only consider margin, padding is already included in height calculation
                 case XGridAlignment.Bottom:
-                    return y + height - cell.Margin.Bottom - cell.Padding.Bottom - totalTextHeight;
+                    return y + height - cell.Margin.Bottom - totalTextHeight;
                 case XGridAlignment.Center:
                 default:
-                    return y + cell.Margin.Top + cell.Padding.Top + (height - totalTextHeight) / 2;
+                    return y + cell.Margin.Top + (height - totalTextHeight) / 2;
             }
         }
 

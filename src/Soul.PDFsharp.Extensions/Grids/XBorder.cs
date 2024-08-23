@@ -29,24 +29,21 @@ namespace Soul.PDFsharp.Extensions
             configure(row);
             _rows.Add(row);
         }
-        
-        internal void DebugBorders()
+
+        internal void EnableDebugBorders()
         {
-            if (!_isDebug)
-            {
-                return;
-            }
+            if (!_isDebug) return;
             foreach (var row in _rows)
             {
-                row.Border.Visible = true; // 设置行边框可见
+                row.Border.Visible = true;
                 foreach (var cell in row.Cells)
                 {
-                    cell.Border.Visible = true; // 设置单元格边框可见
+                    cell.Border.Visible = true;
                 }
             }
         }
 
-        internal List<XGridRow> Rows => _rows;
+        internal IReadOnlyList<XGridRow> Rows => _rows;
     }
     public enum XGridAlignment
     {
@@ -93,30 +90,28 @@ namespace Soul.PDFsharp.Extensions
         public double Top { get; set; }
         public double Bottom { get; set; }
 
-        public XGridBox(double size)
-        {
-            Left = size;
-            Right = size;
-            Top = size;
-            Bottom = size;
-        }
+        public XGridBox(double size) : this(size, size, size, size) { }
 
-        public void SetHorizontal(double left)
-        {
-            Left = left;
-            Right = left;
-        }
-
-        public void SetHorizontal(double left,double right)
+        public XGridBox(double left, double right, double top, double bottom)
         {
             Left = left;
             Right = right;
+            Top = top;
+            Bottom = bottom;
         }
 
-        public void SetVertical(double top)
+        public XGridBox SetHorizontal(double left, double right = 0)
+        {
+            Left = left;
+            Right = right == 0 ? left : right;
+            return this;
+        }
+
+        public XGridBox SetVertical(double top, double bottom = 0)
         {
             Top = top;
-            Bottom = top;
+            Bottom = bottom == 0 ? top : bottom;
+            return this;
         }
 
         public static implicit operator XGridBox(int size)
@@ -129,6 +124,7 @@ namespace Soul.PDFsharp.Extensions
             return new XGridBox(size);
         }
     }
+  
     public class XGridRow
     {
 

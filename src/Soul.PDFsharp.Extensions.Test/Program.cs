@@ -371,7 +371,7 @@ document.DrawPage((page, gfx) =>
     {
         grid.DrawRow(row =>
         {
-            row.Height = 15;
+            row.Height = 30;
             row.Margin.SetHorizontal(80);
             row.Border.Visible = showBorder;
             row.DrawTextCell(cell =>
@@ -434,7 +434,7 @@ document.DrawPage((page, gfx) =>
                     cell.Text = text;
                     cell.Border.Visible = true;
                     cell.Width = 160;
-                    cell.Padding = 10;
+                    cell.Padding = 5;
                     cell.Warp = true;
                     cell.HorizontalAlignment = XGridAlignment.Center;
                 });
