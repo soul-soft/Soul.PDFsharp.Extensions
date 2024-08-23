@@ -8,36 +8,6 @@ namespace Soul.PDFsharp.Extensions
 {
     public static class XGridExtensions
     {
-        public static void DrawCoordinateSystem(this XGraphics graphics, XFont font, double size = 20)
-        {
-            // 获取页面的宽度和高度
-            double pageWidth = graphics.PageSize.Width;
-            double pageHeight = graphics.PageSize.Height;
-
-            // 绘制 Y 轴
-            graphics.DrawLine(XPens.Black, 0, 0, 0, pageHeight); // Y 轴
-            graphics.DrawString("Y", font, XBrushes.Black, 5, 5); // 在 Y 轴末尾标注 Y
-
-            // 绘制 X 轴
-            graphics.DrawLine(XPens.Black, 0, pageHeight, pageWidth, pageHeight); // X 轴
-            graphics.DrawString("X", font, XBrushes.Black, pageWidth - 20, pageHeight + 5); // 在 X 轴末尾标注 X
-
-            // 绘制 X 轴刻度
-            for (double i = 0; i <= pageWidth; i += size)
-            {
-                graphics.DrawLine(XPens.Black, i, pageHeight - 5, i, pageHeight + 5); // 刻度线
-                graphics.DrawString(i.ToString(), font, XBrushes.Black, i - (font.Size / 2), pageHeight + 10); // 刻度数字
-            }
-
-            // 绘制 Y 轴刻度
-            for (double i = 0; i <= pageHeight; i += size)
-            {
-                graphics.DrawLine(XPens.Black, -5, i, 5, i); // 刻度线
-                graphics.DrawString((pageHeight - i).ToString(), font, XBrushes.Black, 10, i - (font.Size / 2)); // 刻度数字
-            }
-        }
-
-
         /// <summary>
         /// 绘制网格，指定起始位置、字体、画刷和配置操作。
         /// </summary>
@@ -114,9 +84,6 @@ namespace Soul.PDFsharp.Extensions
         }
 
         /// <summary>
-        /// 计算行高，通过获取行内最高单元格的高度。
-        /// </summary>
-        /// <summary>
         /// 计算行高，通过获取行内最高单元格的高度，考虑用户指定的行高和单元格内边距。
         /// </summary>
         private static double CalculateRowHeight(XGraphics graphics, XGridRow row, XFont font)
@@ -192,6 +159,11 @@ namespace Soul.PDFsharp.Extensions
                 double measuredWidth = graphics.MeasureString(textCell.Text, font).Width + cell.Padding.Left + cell.Padding.Right;
                 return Math.Min(measuredWidth, graphics.PageSize.Width);
             }
+            else if (cell is XGridImageCell imageCell)
+            {
+                // 优先使用用户设置的宽度
+                return cell.Width > 0 ? cell.Width : imageCell.ImageWidth;
+            }
             return 0;
         }
 
@@ -205,12 +177,13 @@ namespace Soul.PDFsharp.Extensions
                 double availableWidth = width - cell.Padding.Left - cell.Padding.Right;
                 int lineCount = GetLines(graphics, textCell, availableWidth, font).Count;
                 double lineHeight = graphics.MeasureString("A", font).Height;
-
-                // Calculate total text height, including line spacing and padding
                 double totalHeight = lineCount * lineHeight + (lineCount - 1) * textCell.LineSpacing + cell.Padding.Top + cell.Padding.Bottom;
-
-                // Return the total height including padding only once
                 return totalHeight;
+            }
+            else if (cell is XGridImageCell imageCell)
+            {
+                // 优先使用用户设置的高度
+                return cell.Height > 0 ? cell.Height : imageCell.ImageHeight;
             }
             return 0;
         }
@@ -264,14 +237,9 @@ namespace Soul.PDFsharp.Extensions
             {
                 var lines = GetLines(graphics, textCell, cell.Width - cell.Padding.Left - cell.Padding.Right, font);
                 double lineHeight = graphics.MeasureString("A", font).Height;
-
-                // 计算文本总高度
                 double totalTextHeight = lines.Count * lineHeight + (lines.Count - 1) * textCell.LineSpacing;
-
-                // 根据垂直对齐方式调整起始Y坐标，考虑内边距
                 double startY = CalculateTextStartY(y, rowHeight, cell, totalTextHeight);
 
-                // 绘制每一行文本，考虑内边距和水平对齐方式
                 for (int i = 0; i < lines.Count; i++)
                 {
                     var lineY = startY + i * (lineHeight + textCell.LineSpacing);
@@ -284,6 +252,43 @@ namespace Soul.PDFsharp.Extensions
                                           lineHeight);
                     layout.DrawString(lines[i], font, brush, rect, XStringFormats.TopLeft);
                 }
+            }
+            else if (cell is XGridImageCell imageCell)
+            {
+                // 计算图片的水平对齐位置
+                double imageX = x + cell.Margin.Left;
+                switch (cell.HorizontalAlignment)
+                {
+                    case XGridAlignment.Center:
+                        imageX += (cell.Width - imageCell.ImageWidth) / 2;
+                        break;
+                    case XGridAlignment.Right:
+                        imageX += cell.Width - imageCell.ImageWidth;
+                        break;
+                    case XGridAlignment.Left:
+                    default:
+                        // 默认是左对齐
+                        break;
+                }
+
+                // 计算图片的垂直对齐位置
+                double imageY = y + cell.Margin.Top;
+                switch (cell.VerticalAlignment)
+                {
+                    case XGridAlignment.Center:
+                        imageY += (rowHeight - imageCell.ImageHeight) / 2;
+                        break;
+                    case XGridAlignment.Bottom:
+                        imageY += rowHeight - imageCell.ImageHeight;
+                        break;
+                    case XGridAlignment.Top:
+                    default:
+                        // 默认是顶部对齐
+                        break;
+                }
+
+                // 绘制图片
+                graphics.DrawImage(imageCell.Image, imageX, imageY, imageCell.ImageWidth, imageCell.ImageHeight);
             }
 
             // 绘制单元格边框

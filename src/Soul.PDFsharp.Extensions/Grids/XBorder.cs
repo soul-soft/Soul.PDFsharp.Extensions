@@ -55,9 +55,14 @@ namespace Soul.PDFsharp.Extensions
     }
     public abstract class XGridCell
     {
-
+        /// <summary>
+        /// 高度
+        /// </summary>
+        public double Height { get; set; }
+        /// <summary>
+        /// 宽度
+        /// </summary>
         public double Width { get; set; }
-
         /// <summary>
         /// 控制内边距
         /// </summary>
@@ -66,7 +71,6 @@ namespace Soul.PDFsharp.Extensions
         /// 控制外边距
         /// </summary>
         public XGridBox Padding { get; set; } = new XGridBox(0);
-
         /// <summary>
         /// 水平对齐方式
         /// </summary>
@@ -81,7 +85,7 @@ namespace Soul.PDFsharp.Extensions
         /// 控制边框
         /// </summary>
         public XBorder Border { get; } = new XBorder();
-        internal double Height { get;  set; }
+     
     }
     public class XGridBox
     {
@@ -144,6 +148,13 @@ namespace Soul.PDFsharp.Extensions
             _cells.Add(cell);
         }
 
+        public void DrawImageCell(Action<XGridImageCell> configure)
+        {
+            var cell = new XGridImageCell();
+            configure(cell);
+            _cells.Add(cell);
+        }
+
         internal XGrid Grid { get; }
 
         internal IReadOnlyList<XGridCell> Cells => _cells;
@@ -163,5 +174,17 @@ namespace Soul.PDFsharp.Extensions
         /// </summary>
         public double LineSpacing { get; set; } = 0;
      
+    }
+    public class XGridImageCell : XGridCell
+    {
+        /// <summary>
+        /// 要在此单元格中渲染的图片。
+        /// </summary>
+        public XImage Image { get; set; }
+        
+        public double ImageWidth { get; set; }
+
+        public double ImageHeight { get; set; }
+      
     }
 }
