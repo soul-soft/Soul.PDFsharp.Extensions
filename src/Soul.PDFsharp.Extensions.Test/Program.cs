@@ -17,6 +17,7 @@ document.DrawPage((page, gfx) =>
     {
         grid.DrawRow(row =>
         {
+            row.Margin.SetHorizontal(100,100);
             row.DrawTextCell(cell =>
             {
                 cell.Text = "你好";
