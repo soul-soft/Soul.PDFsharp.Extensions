@@ -329,7 +329,7 @@ namespace Soul.PDFsharp.Extensions
         /// <summary>
         /// 绘制单元格或行的边框。
         /// </summary>
-        private static void DrawBorder(XGraphics graphics, XBorder border, double x, double y, double width, double height)
+        private static void DrawBorder(XGraphics graphics, XGridBorder border, double x, double y, double width, double height)
         {
             if (border.Visible)
             {
