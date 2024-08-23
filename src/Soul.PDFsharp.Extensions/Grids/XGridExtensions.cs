@@ -79,6 +79,12 @@ namespace Soul.PDFsharp.Extensions
                 row.Height = CalculateRowHeight(graphics, row, font);
             }
 
+            //同步行高
+            foreach (var item in row.Cells)
+            {
+                item.Height = row.Height;
+            }
+
             // 设置行宽度
             row.Width = totalWidth;
         }
