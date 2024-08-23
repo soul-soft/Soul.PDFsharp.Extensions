@@ -107,6 +107,12 @@ namespace Soul.PDFsharp.Extensions
             Right = left;
         }
 
+        public void SetHorizontal(double left,double right)
+        {
+            Left = left;
+            Right = right;
+        }
+
         public void SetVertical(double top)
         {
             Top = top;

@@ -17,7 +17,6 @@ document.DrawPage((page, gfx) =>
     var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);
     var titleFont = new XFont("STSONG.TTF", 30, XFontStyleEx.Bold);
     var footerFont = new XFont("STSONG.TTF", 18, XFontStyleEx.Bold);
-    gfx.DrawCoordinateSystem(new XFont("STSONG.TTF", 10));
     gfx.DrawGrid(100, titleFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>
@@ -98,13 +97,14 @@ document.DrawPage((page, gfx) =>
 });
 document.DrawPage((page, gfx) =>
 {
+    page.Size = PdfSharp.PageSize.A4;
     var bodyFont = new XFont("STSONG.TTF", 12);
     gfx.DrawRectangle(new XPen(XColors.Black, 0.5), new XRect(50, 50, page.Width.Value - 100, page.Height.Value - 100));
     gfx.DrawGrid(100, bodyFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>
         {
-            row.Height = 100;
+            row.Height = 80;
             row.Margin.Left = 100;
             row.Margin.Right = 50;
             row.Border.Visible = showBorder;
@@ -136,36 +136,38 @@ document.DrawPage((page, gfx) =>
             });
         });
     });
-    gfx.DrawGrid(250, bodyFont, XBrushes.Black, grid =>
+    gfx.DrawGrid(280, bodyFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>
         {
-            row.Height = 30;
+            row.Height = 50;
             row.Margin.Left = 100;
             row.Margin.Right = 50;
             row.DrawTextCell(cell =>
             {
                 cell.Text = "邮            编：";
-                cell.Width = 100;
+                cell.Width = 75;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "315010";
-                cell.Width = 100;
+                cell.Width = 160;
                 cell.Border.Visible = showBorder;
+                cell.HorizontalAlignment = XGridAlignment.Left;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "联系电话：";
-                cell.Width = 100;
+                cell.Width = 60;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "0574-83890360";
-                cell.Width = 100;
+                cell.Width = 160;
                 cell.Border.Visible = showBorder;
+                cell.HorizontalAlignment = XGridAlignment.Left;
             });
         });
         grid.DrawRow(row =>
@@ -176,14 +178,46 @@ document.DrawPage((page, gfx) =>
             row.DrawTextCell(cell =>
             {
                 cell.Text = "咨询作业期：";
-                cell.Width = 100;
+                cell.Width = 75;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "2022年11月至2023年4月";
-                cell.Width = 100;
                 cell.Border.Visible = showBorder;
+                cell.HorizontalAlignment = XGridAlignment.Left;
+            });
+        });
+        grid.DrawRow(row =>
+        {
+            row.Height = 50;
+            row.Margin.Left = 100;
+            row.Margin.Right = 50;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "法定代表人：";
+                cell.Width = 75;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "邵铭法（盖章）";
+                cell.Width = 160;
+                cell.Border.Visible = showBorder;
+                cell.HorizontalAlignment = XGridAlignment.Left;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "技术负责人：";
+                cell.Width = 75;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "陈建华(盖章)";
+                cell.Width = 120;
+                cell.Border.Visible = showBorder;
+                cell.HorizontalAlignment = XGridAlignment.Left;
             });
         });
         grid.DrawRow(row =>
@@ -193,26 +227,38 @@ document.DrawPage((page, gfx) =>
             row.Margin.Right = 50;
             row.DrawTextCell(cell =>
             {
-                cell.Text = "法定代表人：";
+                cell.Text = "项目负责人：";
+                cell.Width = 75;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 66;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
                 cell.Width = 100;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
-                cell.Text = "邵铭法（盖章）";
-                cell.Width = 100;
+                cell.Text = "";
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
-                cell.Text = "技术负责人：";
-                cell.Width = 100;
+                cell.Text = "从事专业：";
+                cell.Width = 70;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
-                cell.Text = "陈建华(盖章)";
-                cell.Width = 100;
+                cell.Text = "";
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
         });
@@ -224,37 +270,37 @@ document.DrawPage((page, gfx) =>
             row.DrawTextCell(cell =>
             {
                 cell.Text = "项目负责人：";
+                cell.Width = 75;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 66;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
                 cell.Width = 100;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "执(从)业资格(章)：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "从事专业：";
-                cell.Width = 50;
+                cell.Width = 70;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "";
-                cell.Width = 50;
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
         });
@@ -265,239 +311,160 @@ document.DrawPage((page, gfx) =>
             row.Margin.Right = 50;
             row.DrawTextCell(cell =>
             {
-                cell.Text = "专业咨询人员：";
+                cell.Text = "项目负责人：";
+                cell.Width = 75;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "";
+                cell.Width = 66;
+                cell.Border.Visible = showBorder;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "执(从)业资格(章)：";
                 cell.Width = 100;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "执(从)业资格(章)：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "从事专业：";
-                cell.Width = 50;
+                cell.Width = 70;
                 cell.Border.Visible = showBorder;
             });
             row.DrawTextCell(cell =>
             {
                 cell.Text = "";
-                cell.Width = 50;
+                cell.Width = 66;
                 cell.Border.Visible = showBorder;
             });
         });
+
+    });
+});
+document.DrawPage((page, gfx) =>
+{
+    var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);
+    var titleFont = new XFont("STSONG.TTF", 24, XFontStyleEx.Bold);
+    gfx.DrawGrid(50, titleFont, XBrushes.Black, grid =>
+    {
         grid.DrawRow(row =>
         {
-            row.Height = 80;
-            row.Margin.Left = 100;
-            row.Margin.Right = 50;
+            row.Height = 50;
+            row.Margin.SetHorizontal(80);
+            row.Border.Visible = showBorder;
             row.DrawTextCell(cell =>
             {
-                cell.Text = "专业咨询人员：";
-                cell.Width = 100;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "执(从)业资格(章)：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "从事专业：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-        });
-        grid.DrawRow(row =>
-        {
-            row.Height = 80;
-            row.Margin.Left = 100;
-            row.Margin.Right = 50;
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "专业咨询人员：";
-                cell.Width = 100;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "执(从)业资格(章)：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 60;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "从事专业：";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
-            });
-            row.DrawTextCell(cell =>
-            {
-                cell.Text = "";
-                cell.Width = 50;
-                cell.Border.Visible = showBorder;
+                cell.Text = "咨 询 报 告 书 目 录";
+                cell.HorizontalAlignment = XGridAlignment.Center;
             });
         });
     });
-});
-//document.DrawPage((page, gfx) =>
-//{
-//    var bodyFont = new XFont("STSONG.TTF", 12, XFontStyleEx.Bold);
-//    var titleFont = new XFont("STSONG.TTF", 24, XFontStyleEx.Bold);
-//    gfx.DrawGrid(50, titleFont, XBrushes.Black, grid =>
-//    {
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 50;
-//            row.Margin.Left = 100;
-//            row.Border.Visible = showBorder;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "咨 询 报 告 书 目 录";
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//        });
-//    });
-//    gfx.DrawGrid(120, bodyFont, XBrushes.Black, grid =>
-//    {
-//        grid.DrawRow(row =>
-//        {
-//            row.Height = 15;
-//            row.Margin.Left = 50;
-//            row.Border.Visible = showBorder;
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "序号";
-//                cell.Border.Visible = true;
-//                cell.Width = 30;
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "文件内容";
-//                cell.Border.Visible = true;
-//                cell.Width = 80;
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "文件作者";
-//                cell.Border.Visible = true;
-//                cell.Width = 80;
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "页数";
-//                cell.Border.Visible = true;
-//                cell.Width = 80;
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//            row.DrawTextCell(cell =>
-//            {
-//                cell.Text = "备注";
-//                cell.Border.Visible = true;
-//                cell.HorizontalAlignment = XGridAlignment.Center;
-//            });
-//        });
+    gfx.DrawGrid(120, bodyFont, XBrushes.Black, grid =>
+    {
+        grid.DrawRow(row =>
+        {
+            row.Height = 15;
+            row.Margin.SetHorizontal(80);
+            row.Border.Visible = showBorder;
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "序号";
+                cell.Border.Visible = true;
+                cell.Width = 30;
+                cell.HorizontalAlignment = XGridAlignment.Center;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "文件内容";
+                cell.Border.Visible = true;
+                cell.Width = 160;
+                cell.HorizontalAlignment = XGridAlignment.Center;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "文件作者";
+                cell.Border.Visible = true;
+                cell.Width = 80;
+                cell.HorizontalAlignment = XGridAlignment.Center;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "页数";
+                cell.Border.Visible = true;
+                cell.Width = 100;
+                cell.HorizontalAlignment = XGridAlignment.Center;
+            });
+            row.DrawTextCell(cell =>
+            {
+                cell.Text = "备注";
+                cell.Border.Visible = true;
+                cell.Width = 200;
 
-//        for (int i = 0; i < 10; i++)
-//        {
-//            grid.DrawRow(row =>
-//            {
-//                row.Height = 15;
-//                row.Margin.Left = 50;
-//                row.Border.Visible = showBorder;
-//                row.DrawTextCell(cell =>
-//                {
-//                    cell.Text = $"{i + 1}";
-//                    cell.Border.Visible = true;
-//                    cell.Width = 30;
-//                    cell.HorizontalAlignment = XGridAlignment.Center;
-//                });
-//                var content = $"报告正文{i}";
-//                if (i == 2)
-//                {
-//                    content = $"报告正文{i}报告正文{i}报告正文{i}报告正文{i}报告正文{i}报告正文{i}报告正文{i}";
-//                }
-//                row.DrawTextCell(cell =>
-//                {
-//                    cell.Text = content;
-//                    cell.Border.Visible = true;
-//                    cell.HorizontalAlignment = XGridAlignment.Center;
-//                    cell.Width = 80;
-//                    cell.Warp = true;
-//                });
-//                row.DrawTextCell(cell =>
-//                {
-//                    cell.Text = "xx";
-//                    cell.Border.Visible = true;
-//                    cell.HorizontalAlignment = XGridAlignment.Center;
-//                    cell.Width = 80;
-//                });
-//                row.DrawTextCell(cell =>
-//                {
-//                    cell.Text = "1-2";
-//                    cell.Border.Visible = true;
-//                    cell.HorizontalAlignment = XGridAlignment.Center;
-//                    cell.Width = 80;
-//                });
-//                row.DrawTextCell(cell =>
-//                {
-//                    cell.Text = "***";
-//                    cell.Border.Visible = true;
-//                    cell.HorizontalAlignment = XGridAlignment.Center;
-//                });
-//            });
-//        }
-//    });
-//});
+                cell.HorizontalAlignment = XGridAlignment.Center;
+            });
+        });
+        for (int i = 0; i < 10; i++)
+        {
+            grid.DrawRow(row =>
+            {
+                row.Margin.SetHorizontal(80);
+                row.Border.Visible = showBorder;
+                row.DrawTextCell(cell =>
+                {
+                    cell.Text = "序号";
+                    cell.Border.Visible = true;
+                    cell.Width = 30;
+                    cell.HorizontalAlignment = XGridAlignment.Center;
+                });
+                var text = "文件内容";
+                if (i == 1)
+                {
+                    text = "文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容文件内容";
+                }
+                row.DrawTextCell(cell =>
+                {
+                    cell.Text = text;
+                    cell.Border.Visible = true;
+                    cell.Width = 160;
+                    cell.Padding = 10;
+                    cell.Warp = true;
+                    cell.HorizontalAlignment = XGridAlignment.Center;
+                });
+                row.DrawTextCell(cell =>
+                {
+                    cell.Text = "文件作者";
+                    cell.Border.Visible = true;
+                    cell.Width = 80;
+                    cell.HorizontalAlignment = XGridAlignment.Center;
+                });
+                row.DrawTextCell(cell =>
+                {
+                    cell.Text = "页数";
+                    cell.Border.Visible = true;
+                    cell.Width = 100;
+                    cell.HorizontalAlignment = XGridAlignment.Center;
+                });
+                row.DrawTextCell(cell =>
+                {
+                    cell.Text = "备注";
+                    cell.Border.Visible = true;
+                    cell.Width = 200;
+
+                    cell.HorizontalAlignment = XGridAlignment.Center;
+                });
+            });
+        }
+
+    });
+});
 
 //document.DrawPage((page, gfx) =>
 //{
