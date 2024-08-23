@@ -295,6 +295,10 @@ namespace Soul.PDFsharp.Extensions
 
                 // 绘制图片
                 graphics.DrawImage(imageCell.Image, imageX, imageY, imageCell.ImageWidth, imageCell.ImageHeight);
+                if (imageCell.DisableImage && imageCell.Image != null)
+                {
+                    try { imageCell.Image?.Dispose(); } finally { }
+                }
             }
 
             // 绘制单元格边框

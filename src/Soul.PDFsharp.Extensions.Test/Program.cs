@@ -14,7 +14,7 @@ var document = new PdfDocument();
 document.Info.Title = "工程造价咨询报告书";
 document.DrawPage((page, gfx) =>
 {
-    var footerFont = new XFont("STSONG.TTF", 18, XFontStyleEx.Bold);
+    var footerFont = new XFont("STSONG.TTF", 18);
     gfx.DrawGrid(100, footerFont, XBrushes.Black, grid =>
     {
         grid.DrawRow(row =>
@@ -33,8 +33,7 @@ document.DrawPage((page, gfx) =>
                 cell.Text = "工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书";
                 cell.Border.Visible = true;
                 cell.Width = 200;
-                cell.Padding = 0;//设置内边距
-                cell.HorizontalAlignment = XGridAlignment.Left;
+                cell.Padding.Left = 10;//设置内边距
             });
             row.DrawImageCell(cell =>
             {

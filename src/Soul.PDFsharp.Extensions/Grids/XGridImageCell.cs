@@ -15,6 +15,8 @@ namespace Soul.PDFsharp.Extensions
         public double ImageWidth { get; set; }
 
         public double ImageHeight { get; set; }
+
+        public bool DisableImage { get; set; } = true;
       
     }
 }
