@@ -50,11 +50,9 @@ namespace Soul.PDFsharp.Extensions
                 if (cell.Width <= 0)
                 {
                     cell.Width = MeasureCellWidth(graphics, cell, font);
-
-                    // 单元格只有一个时，将宽度设置为可用宽度
-                    if (row.Cells.Count == 1)
+                    if (i == row.Cells.Count - 1)
                     {
-                        cell.Width = availableWidth;
+                        cell.Width = availableWidth - totalWidth;
                     }
                 }
 
@@ -63,14 +61,7 @@ namespace Soul.PDFsharp.Extensions
                 {
                     cell.Width = availableWidth - totalWidth;
                 }
-
-                totalWidth += cell.Width;
-            }
-
-            // 处理行宽度溢出
-            if (totalWidth > availableWidth && row.Cells.Count > 0)
-            {
-                row.Cells.Last().Width = availableWidth - (totalWidth - row.Cells.Last().Width);
+                totalWidth += cell.Width + cell.Margin.Left + cell.Margin.Right;
             }
 
             // 计算行高
@@ -146,6 +137,7 @@ namespace Soul.PDFsharp.Extensions
 
             foreach (var cell in row.Cells)
             {
+                currentX += cell.Margin.Left;
                 DrawCell(graphics, cell, font, brush, currentX, currentY, row.Height);
                 currentX += cell.Width + cell.Margin.Right;
             }
@@ -156,14 +148,14 @@ namespace Soul.PDFsharp.Extensions
 
 
         /// <summary>
-        /// 测量单元格的宽度，如果未指定宽度则返回测量值。
+        /// 测量单元格的宽度
         /// </summary>
         private static double MeasureCellWidth(XGraphics graphics, XGridCell cell, XFont font)
         {
             if (cell is XGridTextCell textCell)
             {
-                double measuredWidth = graphics.MeasureString(textCell.Text, font).Width + cell.Padding.Left + cell.Padding.Right;
-                return Math.Min(measuredWidth, graphics.PageSize.Width);
+                double measuredWidth = graphics.MeasureString(textCell.Text, font).Width;
+                return measuredWidth;
             }
             else if (cell is XGridImageCell imageCell)
             {
@@ -182,8 +174,8 @@ namespace Soul.PDFsharp.Extensions
             {
                 double availableWidth = width - cell.Padding.Left - cell.Padding.Right;
                 int lineCount = GetLines(graphics, textCell, availableWidth, font).Count;
-                double lineHeight = graphics.MeasureString("A", font).Height;
-                double totalHeight = lineCount * lineHeight + (lineCount - 1) * textCell.LineSpacing + cell.Padding.Top + cell.Padding.Bottom;
+                double lineHeight = graphics.MeasureString("国", font).Height;
+                double totalHeight = lineCount * lineHeight + (lineCount - 1) * textCell.LineSpacing;
                 return totalHeight;
             }
             else if (cell is XGridImageCell imageCell)
@@ -242,7 +234,7 @@ namespace Soul.PDFsharp.Extensions
             if (cell is XGridTextCell textCell)
             {
                 var lines = GetLines(graphics, textCell, cell.Width - cell.Padding.Left - cell.Padding.Right, font);
-                double lineHeight = graphics.MeasureString("A", font).Height;
+                double lineHeight = graphics.MeasureString("中", font).Height;
                 double totalTextHeight = lines.Count * lineHeight + (lines.Count - 1) * textCell.LineSpacing;
                 double startY = CalculateTextStartY(y, rowHeight, cell, totalTextHeight);
 
@@ -253,8 +245,8 @@ namespace Soul.PDFsharp.Extensions
                     {
                         Alignment = GetParagraphAlignment(textCell.HorizontalAlignment)
                     };
-                    var rect = new XRect(x + cell.Margin.Left + cell.Padding.Left, lineY,
-                                          cell.Width - cell.Margin.Left - cell.Margin.Right - cell.Padding.Left - cell.Padding.Right,
+                    var rect = new XRect(x + cell.Padding.Left, lineY,
+                                          cell.Width - cell.Padding.Right,
                                           lineHeight);
                     layout.DrawString(lines[i], font, brush, rect, XStringFormats.TopLeft);
                 }
@@ -317,9 +309,9 @@ namespace Soul.PDFsharp.Extensions
             switch (cell.VerticalAlignment)
             {
                 case XGridAlignment.Top:
-                    return y + cell.Margin.Top; // Only consider margin, padding is already included in height calculation
+                    return y + cell.Margin.Top + cell.Padding.Top; // Only consider margin, padding is already included in height calculation
                 case XGridAlignment.Bottom:
-                    return y + height - cell.Margin.Bottom - totalTextHeight;
+                    return y + height - cell.Padding.Bottom - totalTextHeight;
                 case XGridAlignment.Center:
                 default:
                     return y + cell.Margin.Top + (height - totalTextHeight) / 2;

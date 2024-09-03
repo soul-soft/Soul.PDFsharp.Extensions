@@ -19,7 +19,7 @@ document.DrawPage((page, gfx) =>
     {
         grid.DrawRow(row =>
         {
-            row.Margin.SetHorizontal(100, 100);
+            row.Margin.SetHorizontal(10, 10);
             row.DrawTextCell(cell =>
             {
                 cell.Text = "你好";
@@ -30,20 +30,26 @@ document.DrawPage((page, gfx) =>
             });
             row.DrawTextCell(cell =>
             {
+                cell.Margin.SetHorizontal(10, 10);
+                cell.Text = "你好";
+                cell.Border.Visible = true;
+                cell.Width = 100;
+                cell.VerticalAlignment = XGridAlignment.Top;
+                cell.HorizontalAlignment = XGridAlignment.Right;
+                //cell.Image = XImage.FromFile("./images/hjd.jpg");
+                //cell.Border.Visible = true;
+                //cell.ImageWidth = 40;
+                //cell.ImageHeight = 40;
+                //cell.Width = 100;
+                //cell.HorizontalAlignment = XGridAlignment.Center;
+                //cell.VerticalAlignment = XGridAlignment.Center;
+            });
+            row.DrawTextCell(cell =>
+            {
                 cell.Text = "工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书工程造价咨询报告书";
                 cell.Border.Visible = true;
-                cell.Width = 200;
-                cell.Padding.Left = 10;//设置内边距
-            });
-            row.DrawImageCell(cell =>
-            {
-                cell.Image = XImage.FromFile("./images/hjd.jpg");
-                cell.Border.Visible = true;
-                cell.Width = 200;
-                cell.ImageWidth = 40;
-                cell.ImageHeight = 40;
-                cell.HorizontalAlignment = XGridAlignment.Center;
-                cell.VerticalAlignment = XGridAlignment.Center;
+                cell.Padding = 20;//设置内边距
+          
             });
         });
     });
