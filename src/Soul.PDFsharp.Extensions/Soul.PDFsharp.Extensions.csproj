@@ -2,23 +2,35 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
-		<ApplicationIcon>soul.ico</ApplicationIcon>
 		<Copyright>MIT</Copyright>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/soul-soft/Soul.PDFsharp.Extensions</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/soul-soft/Soul.PDFsharp.Extensions</PackageProjectUrl>
-		<Version>1.0.0</Version>
+		<Version>1.0.1</Version>
 		<Company>Soul</Company>
 		<Authors>Soul</Authors>
+		<PackageIcon>soul.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Content Include="soul.ico" />
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="PDFsharp" Version="6.2.0-preview-1" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="soul.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+
 
 </Project>
