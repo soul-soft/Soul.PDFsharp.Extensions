@@ -2,7 +2,6 @@
 using PdfSharp.Drawing.Layout;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Soul.PDFsharp.Extensions
 {
