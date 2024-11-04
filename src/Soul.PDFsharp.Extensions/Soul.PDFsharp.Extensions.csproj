@@ -7,7 +7,7 @@
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/soul-soft/Soul.PDFsharp.Extensions</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/soul-soft/Soul.PDFsharp.Extensions</PackageProjectUrl>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<Company>Soul</Company>
 		<Authors>Soul</Authors>
 		<PackageIcon>soul.png</PackageIcon>
